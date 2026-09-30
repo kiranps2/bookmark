@@ -65,7 +65,7 @@ public class BookmarkService {
         Pageable pageable = PageRequest.of(
                 page,
                 3,
-                Sort.by("addedAt").descending()
+                Sort.by("addedAt").ascending()
         );
 
         if (keyword == null || keyword.isBlank()) {

@@ -1,6 +1,7 @@
 package com.example.bookmark.controller;
 
 import com.example.bookmark.model.Bookmark;
+
 import com.example.bookmark.service.BookmarkService;
 
 import org.springframework.data.domain.Page;
@@ -21,7 +22,6 @@ public class BookmarkController {
         this.bookmarkService = bookmarkService;
     }
 
-    // Display bookmarks with search and pagination
 
     @GetMapping
     public String listBookmarks(
@@ -43,7 +43,6 @@ public class BookmarkController {
         return "bookmarks";
     }
 
-    // Display add form
 
     @GetMapping("/add")
     public String addPage(Model model) {
@@ -53,7 +52,6 @@ public class BookmarkController {
         return "bookmark-form";
     }
 
-    // Save bookmark
 
     @PostMapping("/add")
     public String addBookmark(
@@ -86,7 +84,6 @@ public class BookmarkController {
         }
     }
 
-    // Display edit form
 
     @GetMapping("/edit/{id}")
     public String editPage(
@@ -105,7 +102,6 @@ public class BookmarkController {
         return "bookmark-form";
     }
 
-    // Update bookmark
 
     @PostMapping("/edit/{id}")
     public String updateBookmark(
@@ -124,7 +120,6 @@ public class BookmarkController {
         return "redirect:/bookmarks";
     }
 
-    // Delete bookmark
 
     @PostMapping("/delete/{id}")
     public String deleteBookmark(
