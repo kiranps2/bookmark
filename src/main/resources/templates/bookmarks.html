@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>My Bookmarks</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<div class="container py-5">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2 class="fw-bold">
+            My Bookmarks
+        </h2>
+
+        <a th:href="@{/bookmarks/add}"
+           class="btn btn-primary">
+            + Add Bookmark
+        </a>
+
+    </div>
+
+    <!-- Search -->
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-body">
+
+            <form th:action="@{/bookmarks}"
+                  method="get"
+                  class="row g-2">
+
+                <div class="col-md-10">
+
+                    <input type="text"
+                           name="keyword"
+                           th:value="${keyword}"
+                           class="form-control"
+                           placeholder="Search title or URL">
+
+                </div>
+
+                <div class="col-md-2">
+
+                    <button type="submit"
+                            class="btn btn-primary w-100">
+                        Search
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- Bookmark table -->
+    <div class="card shadow-sm">
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-dark">
+
+                        <tr>
+                            <th>Title</th>
+                            <th>URL</th>
+                            <th>Added Time</th>
+                            <th>Actions</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr th:each="bookmark : ${bookmarks.content}">
+
+                            <td th:text="${bookmark.title}">
+                            </td>
+
+                            <td>
+
+                                <a th:href="${bookmark.url}"
+                                   th:text="${bookmark.url}"
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   class="text-decoration-none">
+                                </a>
+
+                            </td>
+
+                            <td th:text="${#temporals.format(
+                                    bookmark.addedAt,
+                                    'dd-MM-yyyy HH:mm'
+                                )}">
+                            </td>
+
+                            <td>
+
+                                <a th:href="@{/bookmarks/edit/{id}(
+                                        id=${bookmark.id}
+                                    )}"
+                                   class="btn btn-sm btn-warning">
+                                    Edit
+                                </a>
+
+                                <form th:action="@{/bookmarks/delete/{id}(
+                                        id=${bookmark.id}
+                                    )}"
+                                      method="post"
+                                      class="d-inline">
+
+                                    <button type="submit"
+                                            class="btn btn-sm btn-danger"
+                                            onclick="return confirm('Are you sure you want to delete this bookmark?')">
+                                        Delete
+                                    </button>
+
+                                </form>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <!-- No bookmarks -->
+            <div th:if="${bookmarks.empty}"
+                 class="alert alert-info text-center mb-0">
+
+                No bookmarks found.
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Pagination -->
+    <div th:if="${bookmarks.totalPages > 1}"
+         class="d-flex justify-content-center mt-4">
+
+        <nav>
+
+            <ul class="pagination">
+
+                <!-- Previous -->
+                <li class="page-item"
+                    th:classappend="${!bookmarks.hasPrevious()} ? 'disabled'">
+
+                    <a class="page-link"
+                       th:if="${bookmarks.hasPrevious()}"
+                       th:href="@{/bookmarks(
+                           page=${bookmarks.number - 1},
+                           keyword=${keyword}
+                       )}">
+                        Previous
+                    </a>
+
+                    <span class="page-link"
+                          th:unless="${bookmarks.hasPrevious()}">
+                        Previous
+                    </span>
+
+                </li>
+
+                <!-- Page numbers -->
+                <li class="page-item"
+                    th:each="i : ${#numbers.sequence(
+                        0,
+                        bookmarks.totalPages - 1
+                    )}"
+                    th:classappend="${i == bookmarks.number} ? 'active'">
+
+                    <a class="page-link"
+                       th:href="@{/bookmarks(
+                           page=${i},
+                           keyword=${keyword}
+                       )}"
+                       th:text="${i + 1}">
+                    </a>
+
+                </li>
+
+                <!-- Next -->
+                <li class="page-item"
+                    th:classappend="${!bookmarks.hasNext()} ? 'disabled'">
+
+                    <a class="page-link"
+                       th:if="${bookmarks.hasNext()}"
+                       th:href="@{/bookmarks(
+                           page=${bookmarks.number + 1},
+                           keyword=${keyword}
+                       )}">
+                        Next
+                    </a>
+
+                    <span class="page-link"
+                          th:unless="${bookmarks.hasNext()}">
+                        Next
+                    </span>
+
+                </li>
+
+            </ul>
+
+        </nav>
+
+    </div>
+
+    <!-- Logout -->
+    <div class="text-center mt-4">
+
+        <form th:action="@{/logout}"
+              method="post">
+
+            <button type="submit"
+                    class="btn btn-outline-danger">
+                Logout
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- Bootstrap JS -->
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+</body>
+</html>

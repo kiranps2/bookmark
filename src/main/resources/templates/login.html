@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>Login</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+</head>
+
+<body class="bg-light">
+
+<div class="container">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-6 col-lg-5">
+
+            <div class="card shadow mt-5">
+
+                <div class="card-body p-4">
+
+                    <h2 class="text-center mb-4">
+                        Login
+                    </h2>
+
+                    <!-- Invalid login -->
+                    <div th:if="${param.error}"
+                         class="alert alert-danger">
+                        Invalid username or password
+                    </div>
+
+                    <!-- Logout message -->
+                    <div th:if="${param.logout}"
+                         class="alert alert-success">
+                        Logged out successfully
+                    </div>
+
+                    <!-- Registration success -->
+                    <div th:if="${param.registered}"
+                         class="alert alert-success">
+                        Registration successful. Please log in.
+                    </div>
+
+                    <form th:action="@{/login}"
+                          method="post">
+
+                        <!-- Username -->
+                        <div class="mb-3">
+
+                            <label for="username"
+                                   class="form-label">
+                                Username
+                            </label>
+
+                            <input type="text"
+                                   id="username"
+                                   name="username"
+                                   class="form-control"
+                                   placeholder="Enter username"
+                                   required>
+
+                        </div>
+
+                        <!-- Password -->
+                        <div class="mb-3">
+
+                            <label for="password"
+                                   class="form-label">
+                                Password
+                            </label>
+
+                            <input type="password"
+                                   id="password"
+                                   name="password"
+                                   class="form-control"
+                                   placeholder="Enter password"
+                                   required>
+
+                        </div>
+
+                        <!-- Login button -->
+                        <div class="d-grid">
+
+                            <button type="submit"
+                                    class="btn btn-primary">
+                                Login
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                    <div class="text-center mt-3">
+
+                        <span>
+                            Don't have an account?
+                        </span>
+
+                        <a th:href="@{/register}"
+                           class="text-decoration-none">
+                            Create Account
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Bootstrap JS -->
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+</body>
+</html>
